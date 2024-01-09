@@ -15,6 +15,10 @@ class LinkedList {
     };
 
     push(value){
+        /**
+         * @param {integer} value the new value to be pushed to the linked list
+         * @returns {linked list} returns the new/updated linked list
+         */
         const newNode = new Node(value); // Create a new node
         if(!this.head){  // Condition if linkedlist is empty
             this.head = newNode;
@@ -24,10 +28,14 @@ class LinkedList {
             this.tail = newNode; // update tail to newNode
         }
         this.length++;
-        return this
+        return this;
     };
 
     pop(){
+        /**
+         * Description: Removes the last element of the linked list
+         * @returns {Node} returns the removed element 
+         */
         let temp = this.head; // Used to keep track & return the last node
         let pre = this.head; // Used to reset the tail
         
@@ -49,9 +57,126 @@ class LinkedList {
     
         return temp; // return the removed node
     };
-}
-let myLinkedList = new LinkedList(7);
 
+    unshift(value){ 
+        /**
+         * Description : Adds a new node at the beginning of the linked list 
+         * @param {integer} value new value to be added 
+         * @returns {LinkedList} A new updated linked list
+         */
+        const newNode = new Node(value);
+        if(!this.head){ // If the linked list is empty
+            this.head = newNode; 
+            this.tail = newNode;
+        } else {
+            newNode.next = this.head; // Connect node to head
+            this.head = newNode; // make the new node head
+        }   
+        this.length++;
+        return this;
+    }
+
+    shift(){
+        /**
+         * Description: Removes the first node of the linked list 
+         * @returns the removed node 
+         */
+        const temp = this.head; 
+        if(!this.head){ // Empty list condiiton
+            return null;
+        } 
+        this.head = this.head.next; // move the head to the next node
+        temp.next = null; // disconnect the temp node from the linked list
+
+        if(this.length === 1){
+            this.tail = null; // set only node's tail to null if length is 1
+        }
+        this.length--;
+        
+        return temp; 
+    }
+
+    get(index){
+        /**
+         * Description: Gets the value at the given index
+         * @param {integer} index the index of the linked list 
+         * @returns {Node} Returns the Node at that index
+         */
+        let temp = this.head; // Define a temporary variable 
+        let i = 0;
+        if(index < 0 || index > this.length - 1){ // Check if index exists
+            return undefined;
+        }
+        while( i < index){ // Increment until index
+            temp = temp.next;
+            i++;
+        }
+        return temp; // return the node
+    }
+
+    set(index, value){
+        /**
+         * Description : Given an index and value, it changes the 
+         * current value of the given index to the new given value 
+         * @param {integer} index the index to update the new value 
+         * @param {integer} value the new value to update to
+         * @returns {boolean} returns true/false depending if the operation
+         * was successful.
+         */
+        const setNode = this.get(index); // Reuse get method to find and verify index
+        if(setNode){ // Check if the value at the given index was found
+            setNode.value = value; // set the new value 
+            return true; 
+        }
+        return false;
+    }
+
+    insert(index, value){
+        /**
+         * @param {integer} value
+         * @param {integer} index 
+         * @returns
+         */
+        console.log(index, this.length, this.length - 1)
+        if(index === 0) return this.unshift(value); // adding to begining of linked list
+        if(index === this.length) return this.push(value); // adding to the end of linked list 
+        if(index < 0 || index > this.length) return false; // if index is invalid
+        
+        const newNode = new Node(value); // create the new node to be added
+        const temp = this.get(index - 1); // get the node in front of the target index
+        newNode.next = temp.next; // connect the new node to the right side of linked list (next)
+        temp.next = newNode; // connect the temp to new node
+        this.length++;
+        return true
+    };
+
+    printList(){
+        let temp = this.head;
+        while(temp){
+            console.log(temp.value)
+            temp = temp.next;
+        }
+    }
+}
+let myLinkedList = new LinkedList(0);
+
+// myLinkedList.push(1);
+myLinkedList.push(2);
+myLinkedList.push(3);
 // myLinkedList.push(4);
-myLinkedList.pop();
-console.log(myLinkedList)
+// myLinkedList.push(5);
+// myLinkedList.push(6);
+
+
+
+console.log(myLinkedList.insert(3, 100));
+
+
+// myLinkedList.unshift(10);
+// myLinkedList.shift();
+
+// myLinkedList.pop();
+// console.log(myLinkedList.get(2))
+// console.log(myLinkedList.set(1, 100));
+myLinkedList.printList(myLinkedList);
+// console.log(myLinkedList);
