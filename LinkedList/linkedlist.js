@@ -135,7 +135,7 @@ class LinkedList {
         /**
          * @param {integer} value
          * @param {integer} index 
-         * @returns
+         * @returns {boolean} Returns true/false depending whether the operation was sucessful
          */
         console.log(index, this.length, this.length - 1)
         if(index === 0) return this.unshift(value); // adding to begining of linked list
@@ -150,6 +150,42 @@ class LinkedList {
         return true
     };
 
+    remove(index){
+        /**
+         * @param {integer} index the index to remove in linked list
+         * @returns {Node} returns the removed node
+         */
+        // Use previous defined methods to remove a node in front and end of linked list
+        if(index === 0) return this.shift(); 
+        if(index === this.length - 1) return this.pop();
+        if(index < 0 || index >= this.length) return undefined; 
+
+        
+        let prevNode = this.get(index - 1); // Get prev node of the removed node
+        let removeNode = prevNode.next; // Get removed node
+        prevNode.next = removeNode.next; // point prev node, to the node after removed node
+        removeNode.next = null; // disconnect the remove node from linked list
+        this.length--;
+        return removeNode;
+    }; 
+
+    reverse(){
+        let temp = this.head;
+        this.head = this.tail;
+        this.tail = temp; 
+        let next = temp.next;
+        let prev = null;
+
+        for(let i = 0; i < this.length; i++){
+            next = temp.next; // keep track of next node in original linked list
+            temp.next = prev; // reverse the direction of the current node
+            prev = temp; // move the prev pointer to current node
+            temp = next; // move temp pointer to the next node in original linked list 
+        }
+        return this;
+    }
+
+
     printList(){
         let temp = this.head;
         while(temp){
@@ -160,23 +196,19 @@ class LinkedList {
 }
 let myLinkedList = new LinkedList(0);
 
-// myLinkedList.push(1);
+myLinkedList.push(1);
 myLinkedList.push(2);
-myLinkedList.push(3);
+// myLinkedList.push(3);
 // myLinkedList.push(4);
 // myLinkedList.push(5);
 // myLinkedList.push(6);
-
-
-
-console.log(myLinkedList.insert(3, 100));
-
-
+myLinkedList.reverse();
+// console.log(myLinkedList.insert(1, 1));
 // myLinkedList.unshift(10);
 // myLinkedList.shift();
-
 // myLinkedList.pop();
 // console.log(myLinkedList.get(2))
 // console.log(myLinkedList.set(1, 100));
+// myLinkedList.remove(1);
 myLinkedList.printList(myLinkedList);
 // console.log(myLinkedList);
